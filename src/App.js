@@ -8,7 +8,7 @@ import 'firebase/firestore'
 import 'firebase/auth'
 
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { useCollection, useCollectionData } from 'react-firebase-hooks/firestore'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 // firebase config
 firebase.initializeApp({
@@ -46,11 +46,11 @@ function SignIn() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <button onClick={signInWithGoogle}>Login with Google</button>
-      </header>
+    <div>
+        <button onClick={signInWithGoogle}>
+        <img src={"https://img.icons8.com/plasticine/2x/google-logo.png"} alt='Google Icon' />
+        <span>Sign In With Google</span>
+      </button>
     </div>
   )
 }
@@ -64,32 +64,65 @@ function SignOut() {
 }
 
 function ChatRoom() {
-  // scroll to bottom when pre-load and after send message
   const dummy = useRef();
+  const messagesRef = firestore.collection('messages');
+  const query = messagesRef.orderBy('createdAt', 'asc').limitToLast(25);
+
+  const [messages] = useCollectionData(query, {idField: 'id'});
+  const [formValue, setFormValue] = useState('');
+
   const scrollToBottom = () => {
-    dummy.current.scrollIntoView({behavior: 'smooth'})
+    dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
 
-  // getting message
-  const messageRef = firestore.collection('messages')
-  // sorting them by time of creation
-  const query = messageRef.orderBy('createdAt', 'asc').limitToLast(25)
+  useEffect(scrollToBottom, [messages]);
 
-  const [messages] = useCollectionData(query, {idField: 'id'})
+  const sendMessage = async (e) => {
+    e.preventDefault();
+
+    const { displayName, uid, photoURL } = auth.currentUser;
+
+    await messagesRef.add({
+      user: displayName,
+      body: formValue,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      uid: uid,
+      photoURL: photoURL
+    })
+
+    setFormValue('');
+    dummy.current.scrollIntoView({ behavior: 'smooth' });
+  }
 
   return (
     <div>
       <div>
-        {/* return a ChatMessage component for each message :D */}
-        { messages && messages.map(msg => <ChatMessage key={msg.id} message={msg}/>) }
+        {/* call ChatMessage Component for each new message */}
+        {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
         <span ref={dummy}></span>
       </div>
 
       <form onSubmit={sendMessage}>
-        <input value={formValue} onChange={(c) => setFormValue(c.target.value)} placeholder={"Write something..."} />
-        <button type="submit" disabled={!formValue}>Send</button>
+        <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Say something" />
+        <button type="submit" disabled={!formValue}>send</button>
       </form>
     </div>
+  )
+}
+
+function ChatMessage(props) {
+  const { user, body, uid, photoURL, createdAt } = props.message;
+
+    return (
+      <div>
+        <div>
+          <img src={photoURL || 'https://i.imgur.com/rFbS5ms.png'} alt="{user}'s pfp" />
+        </div>
+        <div>
+          <p>{user}</p>
+          <p>{body}</p>
+        </div>
+      </div>
   )
 }
 
