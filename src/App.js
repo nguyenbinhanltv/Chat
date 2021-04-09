@@ -8,7 +8,7 @@ import 'firebase/firestore'
 import 'firebase/auth'
 
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { useCollection, useCollectionData } from 'react-firebase-hooks/firestore'
 
 // firebase config
 firebase.initializeApp({
@@ -64,9 +64,31 @@ function SignOut() {
 }
 
 function ChatRoom() {
+  // scroll to bottom when pre-load and after send message
+  const dummy = useRef();
+  const scrollToBottom = () => {
+    dummy.current.scrollIntoView({behavior: 'smooth'})
+  }
+
+  // getting message
+  const messageRef = firestore.collection('messages')
+  // sorting them by time of creation
+  const query = messageRef.orderBy('createdAt', 'asc').limitToLast(25)
+
+  const [messages] = useCollectionData(query, {idField: 'id'})
+
   return (
     <div>
-      <p>Chat Room Here</p>
+      <div>
+        {/* return a ChatMessage component for each message :D */}
+        { messages && messages.map(msg => <ChatMessage key={msg.id} message={msg}/>) }
+        <span ref={dummy}></span>
+      </div>
+
+      <form onSubmit={sendMessage}>
+        <input value={formValue} onChange={(c) => setFormValue(c.target.value)} placeholder={"Write something..."} />
+        <button type="submit" disabled={!formValue}>Send</button>
+      </form>
     </div>
   )
 }
