@@ -7,6 +7,7 @@ import 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 
+// firebase config
 firebase.initializeApp({
   apiKey: "AIzaSyDPJBnRSj8iuDh9kqgNk20nu2AJ6RgOmro",
   authDomain: "chat-c84a6.firebaseapp.com",
@@ -21,14 +22,42 @@ const firestore = firebase.firestore()
 
 
 function App() {
+
+  // check user authenticate
+  const [user] = userAuthState(auth)
+
+  return (
+    <div>
+      <SignOut />
+      <section>
+        // show Chat Room if user logged or else Sign In
+        {user ? <ChatRoom /> : <SignIn />}
+      </section>
+    </div>
+  );
+}
+
+function SignIn() {
+  const signInWithGoogle = () => {
+    auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+  }
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <button ></button>
+        <button onClick={signInWithGoogle}>Login with Google</button>
       </header>
     </div>
-  );
+  )
+}
+
+function SignOut() {
+  return auth.currentUser && (
+    <div>
+      <button onClick={() => auth.SignOut()}>Sign Out</button>
+    </div>
+  )
 }
 
 export default App;
