@@ -1,6 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
 
+import React, { useEffect, useRef, useState } from 'react';
+
+import firebase from 'firebase/app';
 import 'firebase/firestore'
 import 'firebase/auth'
 
@@ -24,13 +27,13 @@ const firestore = firebase.firestore()
 function App() {
 
   // check user authenticate
-  const [user] = userAuthState(auth)
+  const [user] = useAuthState(auth)
 
   return (
     <div>
       <SignOut />
       <section>
-        // show Chat Room if user logged or else Sign In
+        {/* show Chat Room if user logged or else Sign In */}
         {user ? <ChatRoom /> : <SignIn />}
       </section>
     </div>
@@ -55,7 +58,15 @@ function SignIn() {
 function SignOut() {
   return auth.currentUser && (
     <div>
-      <button onClick={() => auth.SignOut()}>Sign Out</button>
+      <button onClick={() => auth.signOut()}>Sign Out</button>
+    </div>
+  )
+}
+
+function ChatRoom() {
+  return (
+    <div>
+      <p>Chat Room Here</p>
     </div>
   )
 }
