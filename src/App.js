@@ -46,13 +46,31 @@ function SignIn() {
   }
 
   return (
-    <div>
-        <button onClick={signInWithGoogle}>
-        <img src={"https://img.icons8.com/plasticine/2x/google-logo.png"} alt='Google Icon' />
-        <span>Sign In With Google</span>
-      </button>
+    <div className="w-full h-screen overflow-hidden">
+        <section className="text-gray-700 body-font">
+            <div className="container flex flex-col items-center px-5 py-16 mx-auto md:flex-row lg:px-28">
+                <div
+                    className="flex flex-col items-start w-full pt-0 mb-16 text-left lg:flex-grow md:w-1/2 xl:mr-20 md:pr-24 md:mb-0 ">
+                    <h1 className="mb-8 text-2xl font-black tracking-tighter text-black md:text-5xl title-font">
+                        Make Fun With Together.
+                    </h1>
+                    <p className="mb-8 text-base leading-relaxed text-left text-blueGray-600 ">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                    </p>
+                    <div className="flex flex-col w-full gap-2 md:justify-start md:flex-row"> 
+                        <button onClick={signInWithGoogle}  className="flex items-center w-full px-6 py-2 font-semibold text-white transition duration-500 ease-in-out transform bg-black rounded-lg lg:w-auto hover:bg-gray-900 focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2">
+                        <img src={"https://img.icons8.com/plasticine/2x/google-logo.png"} alt='Google Icon' className="w-12 h-12" />
+                         <span>Sign In With Google</span>
+                        </button>
+                    </div>
+                </div>
+                <div className="w-full h-screen lg:w-5/6 lg:max-w-lg md:w-1/2">
+                    <img className="object-cover object-center rounded-lg h-5/6" alt="hero"
+                        src="https://images.unsplash.com/photo-1521898284481-a5ec348cb555?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" />
+                </div>
+            </div>
+        </section>
     </div>
-    
   )
 }
 
