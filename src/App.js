@@ -52,6 +52,7 @@ function SignIn() {
         <span>Sign In With Google</span>
       </button>
     </div>
+    
   )
 }
 
