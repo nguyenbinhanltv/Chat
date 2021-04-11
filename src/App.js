@@ -76,8 +76,15 @@ function SignIn() {
 
 function SignOut() {
   return auth.currentUser && (
-    <div>
-      <button onClick={() => auth.signOut()}>Sign Out</button>
+    <div className="text-gray-700 bg-white body-font"> 
+      <div className="flex flex-col flex-wrap justify-between p-5 mx-auto border-b md:items-center md:flex-row">
+      <h2 class="text-2xl font-semibold tracking-tighter transition duration-1000 ease-in-out transform text-blueGray-500 lg:text-md text-bold lg:mr-8">
+        Chat App
+      </h2>
+      <button onClick={() => auth.signOut()}
+            className="items-center px-8 py-2 font-semibold text-white transition duration-500 ease-in-out transform bg-black rounded-lg hover:bg-blueGray-900 focus:ring focus:outline-none">Sign Out
+      </button>
+      </div>
     </div>
   )
 }
@@ -114,7 +121,7 @@ function ChatRoom() {
   }
 
   return (
-    <div>
+    <div className="w-1/2 h-4/5 mt-3 border-2 m-auto">
       <div>
         {/* call ChatMessage Component for each new message */}
         {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
@@ -133,14 +140,14 @@ function ChatMessage(props) {
   const { user, body, uid, photoURL, createdAt } = props.message;
 
     return (
-      <div>
-        <div>
-          <img src={photoURL || 'https://i.imgur.com/rFbS5ms.png'} alt="{user}'s pfp" />
+      <div className="flex items-end">
+        <div >
+          <img src={photoURL || 'https://i.imgur.com/rFbS5ms.png'} alt="{user}'s pfp" className="rounded-full w-8 h-8" />
         </div>
-        <div>
+        <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
           <p>{user}</p>
-          <p>{body}</p>
-        </div>
+          <p className="px-4 py-2 rounded-lg inline-block bg-gray-300 text-gray-600">{body}</p>
+      </div>
       </div>
   )
 }
