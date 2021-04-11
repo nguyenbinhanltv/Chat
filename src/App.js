@@ -52,7 +52,7 @@ function SignIn() {
                 <div
                     className="flex flex-col items-start w-full pt-0 mb-16 text-left lg:flex-grow md:w-1/2 xl:mr-20 md:pr-24 md:mb-0 ">
                     <h1 className="mb-8 text-2xl font-black tracking-tighter text-black md:text-5xl title-font">
-                        Make Fun With Together.
+                        Make Fun Together.
                     </h1>
                     <p className="mb-8 text-base leading-relaxed text-left text-blueGray-600 ">
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
